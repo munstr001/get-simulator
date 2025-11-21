@@ -6,7 +6,7 @@ FILE="$ROOT_DIR/README.md"
 
 ensure_trailing_newline() {
   if [[ -s "$FILE" && $(tail -c1 "$FILE") != $'\n' ]]; then
-    printf '\n' >> "$FILE"
+    echo >> "$FILE"
   fi
 }
 
@@ -14,13 +14,13 @@ append_entry() {
   local stamp rand
   stamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
   rand=$(openssl rand -hex 4)
-  printf "- %s | token: %s\n" "$stamp" "$rand" >> "$FILE"
+  printf -- "- %s | token: %s\n" "$stamp" "$rand" >> "$FILE"
 }
 
 ensure_trailing_newline
 
-if [[ $(tail -n1 "$FILE") != "" ]]; then
-  printf '\n' >> "$FILE"
+if [[ -n "$(tail -n1 "$FILE")" ]]; then
+  echo >> "$FILE"
 fi
 
 for i in 1 2 3; do
