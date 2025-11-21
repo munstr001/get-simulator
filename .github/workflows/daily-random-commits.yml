@@ -1,0 +1,29 @@
+name: Daily Readmi Updates
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  random-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure bot identity
+        run: |
+          git config user.name "readmi-bot"
+          git config user.email "readmi-bot@users.noreply.github.com"
+
+      - name: Generate three random commits
+        run: |
+          chmod +x scripts/daily_random_commits.sh
+          scripts/daily_random_commits.sh
+
+      - name: Push changes
+        run: git push
